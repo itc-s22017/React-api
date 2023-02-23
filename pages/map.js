@@ -1,6 +1,7 @@
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api'
 import { useState } from 'react'
 import Container from 'components/container'
+import icon from 'images-local/favicon.ico'
 
 const Map = (props) => {
   const containerStyle = {
@@ -21,7 +22,12 @@ const Map = (props) => {
         <GoogleMap
           mapContainerStyle={containerStyle} center={props.pos}
           options={options} onClick={e => props.position(e)}
-        />
+        >
+          <MarkerF
+            position={props.pos} animation={2} title={props.lng}
+            onClick={(e) => props.removeMarker(e)}
+          />
+        </GoogleMap>
       </LoadScript>
     </>
   )
@@ -39,9 +45,17 @@ const Main = () => {
     setPos(e.latLng)
   }
 
+  const removeMarker = (e) => {
+    console.log(e)
+  }
+
   return (
     <Container>
-      <Map position={position} pos={pos} />
+      <Map
+        position={position} pos={pos}
+        lng={String(`${pos.lat}:${pos.lng}`)}
+        removeMarker={removeMarker}
+      />
     </Container>
   )
 }
