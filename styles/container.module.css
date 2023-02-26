@@ -4,7 +4,13 @@
     text-align:center;
 }
 
-.container > img {
+.container > a > img {
     width:40%;
-    height:400px;
+    height:500px;
+    object-fit:cover;
+    padding:10px;
+}
+
+.container > p{
+    margin:0;
 }

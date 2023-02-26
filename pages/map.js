@@ -1,6 +1,8 @@
+// インスタンスを使わずに作ってみました
+// places apiのnearBySearchを使いたかったのですがCORSエラーに引っかかってできませんでした
 import { useState, useRef, useEffect } from 'react'
-import axios from 'axios'
 import GoogleMap from 'components/googlemap'
+import { getMap } from 'lib/mapapi'
 
 /* const Info = (props) => {
   return (
@@ -15,22 +17,21 @@ import GoogleMap from 'components/googlemap'
 }
 */
 const Main = () => {
+  const [pos, setPos] = useState({ lat: null, lng: null })
+  const ref = useRef()
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords
       setPos({
-        lat: latitude,
-        lng: longitude
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
       })
     })
   }, [])
 
-  const [pos, setPos] = useState({ lat: null, lng: null })
-  const ref = useRef()
-
   useEffect(() => {
     console.log(pos)
   }, [pos])
+
   const position = e => {
     const p = {
       lat: e.latLng.lat(),
@@ -41,23 +42,15 @@ const Main = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    try {
-      const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-        params: {
-          address: ref.current.value,
-          key: process.env.NEXT_PUBLIC_MAPS_KEY
-        }
-      })
-      setPos(response.data.results[0].geometry.location)
-    } catch (error) {
-      console.error('Not Found...')
-    }
+    const getData = getMap(ref.current.value) // lib directory
+    getData
+      .then(res => setPos(res.data.results[0].geometry.location))
   }
 
   const forMap = {
     position,
     pos,
-    lng: pos.lng
+    lng: `${pos.lat}:${pos.lng}` // 何故か更新されない
   }
 
   return (

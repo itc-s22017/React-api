@@ -1,6 +1,4 @@
-// 別プロジェクトで書いていたのでコミット少ないです
 // ローカルストレージに保存したけど一個前の値が適用されてしまいます;;
-//
 import { useState, useEffect } from 'react'
 const Square = (props) => {
   return (
