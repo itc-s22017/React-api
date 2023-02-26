@@ -1,19 +1,8 @@
-import { GoogleMap, LoadScript, MarkerF, InfoWindow } from '@react-google-maps/api'
-import { useState, useRef } from 'react'
-import icon from 'images-local/favicon.ico'
+import { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
+import GoogleMap from 'components/googlemap'
 
-const Marker = (props) => {
-  return (
-    <MarkerF
-      position={props.pos}
-      animation={1}
-      title={props.lng}
-    />
-  )
-}
-
-const Info = (props) => {
+/* const Info = (props) => {
   return (
     <>
       <InfoWindow position={props.tokyo}>
@@ -24,50 +13,30 @@ const Info = (props) => {
     </>
   )
 }
-
-const Map = (props) => {
-  const style = {
-    height: '50vh',
-    width: '50%'
-  }
-
-  const options = {
-    disableDefaultUI: true,
-    zoom: 17,
-    zoomControl: true,
-    mapTypeId: 'hybrid'
-  }
-
-  return (
-    <>
-      <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_MAPS_KEY}>
-        <GoogleMap
-          mapContainerStyle={style} center={props.pos}
-          options={options} onClick={e => props.position(e)}
-        >
-          <Marker
-            pos={props.pos}
-            lng={props.lng}
-          />
-        </GoogleMap>
-      </LoadScript>
-    </>
-  )
-}
-
+*/
 const Main = () => {
-  const tokyo = {
-    lat: 35.65856,
-    lng: 139.745461
-  }
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords
+      setPos({
+        lat: latitude,
+        lng: longitude
+      })
+    })
+  }, [])
 
-  const [pos, setPos] = useState(tokyo)
+  const [pos, setPos] = useState({ lat: null, lng: null })
   const ref = useRef()
-  const [flag, setFlag] = useState(false)
 
-  const position = e => {
-    setPos(e.latLng)
+  useEffect(() => {
     console.log(pos)
+  }, [pos])
+  const position = e => {
+    const p = {
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng()
+    }
+    setPos(p)
   }
 
   const handleSubmit = async (e) => {
@@ -85,13 +54,25 @@ const Main = () => {
     }
   }
 
+  const forMap = {
+    position,
+    pos,
+    lng: pos.lng
+  }
+
+  useEffect(() => {
+    axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${process.env.NEXT_PUBLIC_MAPS_KEY}&location=35.6987769,139.76471&radius=300&language=ja&keyword=公園OR広場OR駅`)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [])
+
   return (
     <>
-      <Map
-        position={position} pos={pos}
-        lng={String('a')}
-        tokyo={tokyo}
-      />
+      <GoogleMap {...forMap} on />
       <form onSubmit={e => handleSubmit(e)}>
         <input ref={ref} type='text' placeholder='例:東京タワー' />
       </form>

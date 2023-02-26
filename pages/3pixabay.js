@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import Container from 'components/container'
-import Image from 'next/image'
 const Input = (props) => {
   return (
     <form onSubmit={(e) => props.handleSubmit(e)}>
@@ -54,7 +53,7 @@ const App = () => {
         per_page: 10
       }
       const data = await axios.get(url, { params })
-      setImages(data.data.hits)
+      setImages(prev => data.data.hits)
       console.log(Images)
     } catch (e) {
       console.log(e)
