@@ -1,4 +1,4 @@
-// ローカルストレージに保存したけど一個前の値が適用されてしまいます;;
+// localstorage使ったらビルド時にエラー出たのでやめました
 import { useState, useEffect } from 'react'
 const Square = (props) => {
   return (
