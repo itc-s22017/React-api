@@ -21,9 +21,10 @@ const Main = () => {
   const ref = useRef()
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords
       setPos({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
+        lat: latitude,
+        lng: longitude
       })
     })
   }, [])
