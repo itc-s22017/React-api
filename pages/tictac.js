@@ -29,6 +29,7 @@ const Game = () => {
   const [squares, setSquares] = useState(array)
   const [flag, setFlag] = useState(false)
 
+  /*
   useEffect(() => {
     const d = window.localStorage.getItem('sq')
     setSquares(JSON.parse(d))
@@ -36,6 +37,7 @@ const Game = () => {
     const b = window.localStorage.getItem('flag')
     setFlag(JSON.parse(b))
   }, [])
+  */
 
   let status
   const winner = calculateWinner(squares)
@@ -49,8 +51,10 @@ const Game = () => {
     if (calculateWinner(squares) || squares[value]) { // squares[value]でマス目判定できる意味がわからないけどとりあえず
       return
     }
+    /*
     window.localStorage.setItem('sq', JSON.stringify(squares))
     window.localStorage.setItem('flag', JSON.stringify(flag))
+    */
     const v = flag ? 'O' : 'X'
     const copy = [...squares]
     const index = copy.map((v, i) => {
