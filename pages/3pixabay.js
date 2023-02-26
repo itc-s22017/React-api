@@ -60,6 +60,7 @@ const App = () => {
     }
   }
 
+  /*
   const targetIndex = (e, target) => {
     if (!window.confirm('SURE?')) {
       return
@@ -93,6 +94,7 @@ const App = () => {
       }
     })
   }
+  */
 
   /*
   const handleReq = async (e) => {
@@ -123,7 +125,7 @@ const App = () => {
     <>
       <Container>
         <Input setText={setText} value={Text} handleSubmit={handleSubmit} />
-        <Img data={Images} targetIndex={targetIndex} />
+        <Img data={Images} />
       </Container>
     </>
   )

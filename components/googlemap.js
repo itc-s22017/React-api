@@ -24,7 +24,7 @@ const Map = (props) => {
           {props.on && <Marker
             pos={props.pos}
             lng={props.lng}
-                 />}
+                       />}
         </GoogleMap>
       </LoadScript>
     </>

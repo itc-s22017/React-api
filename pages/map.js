@@ -60,16 +60,6 @@ const Main = () => {
     lng: pos.lng
   }
 
-  useEffect(() => {
-    axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${process.env.NEXT_PUBLIC_MAPS_KEY}&location=35.6987769,139.76471&radius=300&language=ja&keyword=公園OR広場OR駅`)
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }, [])
-
   return (
     <>
       <GoogleMap {...forMap} on />
